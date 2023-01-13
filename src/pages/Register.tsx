@@ -61,7 +61,7 @@ export const Register: React.FC = () => {
                         <h1>
                             <span className="highlight">Daftar</span> sekarang
                         </h1>
-                        <h1>Linkpendek.in</h1>
+                        <h1>Lihat.in</h1>
                     </div>
 
                     <div className="d-flex justify-content-center">
