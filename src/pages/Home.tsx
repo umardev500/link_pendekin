@@ -7,7 +7,7 @@ import { createPostLink } from '../store/features/linkSlice'
 import { Payload } from '../types'
 
 export const Home: React.FC = () => {
-    const [url, setUrl] = useState('http://google.com')
+    const [url, setUrl] = useState('')
     const [short, setShort] = useState('')
     const [custom, setCustom] = useState(false)
     const toastLoading = React.useRef<any>(null)
