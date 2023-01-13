@@ -33,11 +33,30 @@ export const Detail: React.FC = () => {
     }
 
     const copied = (): void => {
-        toast('Link copied to clipboard')
+        toast('Link copied to clipboard', { autoClose: 3000 })
     }
 
     const downloadImage = (): void => {
-        saveAs(qrLink, fileName)
+        // saveAs(qrLink, fileName)
+        const fetchImage = async (): Promise<void> => {
+            try {
+                const response = await fetch(qrLink + 'sd')
+                const statusCode = response.status
+
+                if (statusCode === 200) {
+                    const blob = await response.blob()
+                    saveAs(blob, fileName)
+                } else {
+                    toast('Something went wrong...', { autoClose: 3000 })
+                }
+            } catch (err) {
+                toast('Something went wrong...', { autoClose: 3000 })
+            }
+        }
+
+        fetchImage().catch((err) => {
+            console.log(err)
+        })
     }
 
     useEffect(() => {
