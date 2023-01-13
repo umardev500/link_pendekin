@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import fieldErrors from '../helper/fieldErrors'
 import { useAppDispatch, useAppSelector } from '../store'
@@ -6,7 +7,7 @@ import { createPostLink } from '../store/features/linkSlice'
 import { Payload } from '../types'
 
 export const Home: React.FC = () => {
-    const [url, setUrl] = useState('')
+    const [url, setUrl] = useState('http://google.com')
     const [short] = useState('')
     const [custom, setCustom] = useState(false)
     const toastLoading = React.useRef<any>(null)
@@ -16,6 +17,7 @@ export const Home: React.FC = () => {
     const ERRORS = fieldErrors(link.message)
 
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const createHandler = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
@@ -39,6 +41,8 @@ export const Home: React.FC = () => {
                 if (status === 'success') {
                     toast.dismiss(toastLoading.current)
                     toast('Link created', { autoClose: 2000 })
+                    const shortKey = response.data.short as string
+                    navigate(`/detail/${shortKey}`)
                 }
                 // console.log(response)
             } catch (err) {
