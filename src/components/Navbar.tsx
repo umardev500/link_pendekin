@@ -20,8 +20,6 @@ export const Navbar: React.FC = () => {
         navigate('/login')
     }
 
-    console.log(location)
-
     return (
         <nav className="navbar navbar-dark">
             <div className="container">
