@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { HashRouter as RouterRoot, Route, Routes } from 'react-router-dom'
 import { Navbar } from '../components/Navbar'
 import { GuestRoute, ProtectedRoute } from '../middleware'
 import { Detail, Edit, Home, Login, Register } from '../pages'
@@ -7,7 +7,7 @@ import { Dashboard } from '../pages/Dashboard'
 
 export const Router = (): React.ReactElement => {
     return (
-        <BrowserRouter>
+        <RouterRoot>
             <Navbar />
 
             <Routes>
@@ -39,6 +39,6 @@ export const Router = (): React.ReactElement => {
                     }
                 />
             </Routes>
-        </BrowserRouter>
+        </RouterRoot>
     )
 }
