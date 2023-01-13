@@ -1,7 +1,11 @@
 import { Payload } from '../types'
 
 export const createLink = async (data: Payload): Promise<void> => {
-    await fetch('http://localhost:2000/links', {
+    const env = import.meta.env
+    const protocol = env.VITE_REACT_APP_BACKEND_PROTOCOL as string
+    const host = env.VITE_REACT_APP_BACKEND_DOMAIN as string
+    const target = `${protocol}://${host}/links`
+    await fetch(target, {
         method: 'POST',
         headers: {
             Accept: 'application/json',

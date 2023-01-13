@@ -13,7 +13,10 @@ export interface UpdatePropsType {
     id: string
 }
 export const updateLink = createAsyncThunk('link/updateLink', async ({ data, id }: UpdatePropsType, { rejectWithValue }) => {
-    const target = `http://localhost:2000/links/${id}`
+    const env = import.meta.env
+    const protocol = env.VITE_REACT_APP_BACKEND_PROTOCOL as string
+    const host = env.VITE_REACT_APP_BACKEND_DOMAIN as string
+    const target = `${protocol}://${host}/links/${id}`
     let headers: any = {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -65,7 +68,11 @@ export const createPostLink = createAsyncThunk('link/createLink', async ({ url, 
     }
 
     try {
-        const response = await fetch('http://localhost:2000/links', {
+        const env = import.meta.env
+        const protocol = env.VITE_REACT_APP_BACKEND_PROTOCOL as string
+        const host = env.VITE_REACT_APP_BACKEND_DOMAIN as string
+        const target = `${protocol}://${host}/links`
+        const response = await fetch(target, {
             method: 'POST',
             headers,
             body: JSON.stringify(requestBody),
@@ -78,7 +85,10 @@ export const createPostLink = createAsyncThunk('link/createLink', async ({ url, 
 })
 
 export const getLink = createAsyncThunk('link/getLink', async (short: string, { rejectWithValue }) => {
-    const target = `http://localhost:2000/links/${short}`
+    const env = import.meta.env
+    const protocol = env.VITE_REACT_APP_BACKEND_PROTOCOL as string
+    const host = env.VITE_REACT_APP_BACKEND_DOMAIN as string
+    const target = `${protocol}://${host}/links/${short}`
 
     try {
         const response = await fetch(target)
@@ -91,7 +101,10 @@ export const getLink = createAsyncThunk('link/getLink', async (short: string, { 
 })
 
 export const getLinks = createAsyncThunk('link/getLinks', async (props, { rejectWithValue }) => {
-    const target = `http://localhost:2000/links`
+    const env = import.meta.env
+    const protocol = env.VITE_REACT_APP_BACKEND_PROTOCOL as string
+    const host = env.VITE_REACT_APP_BACKEND_DOMAIN as string
+    const target = `${protocol}://${host}/links`
     let headers: any = {
         Accept: 'application/json',
         'Content-Type': 'application/json',

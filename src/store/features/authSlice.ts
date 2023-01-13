@@ -6,7 +6,10 @@ export interface LoginProps {
     password: string
 }
 export const login = createAsyncThunk('auth/login', async ({ email, password }: LoginProps, { rejectWithValue }) => {
-    const target = `http://localhost:2000/auth/login`
+    const env = import.meta.env
+    const protocol = env.VITE_REACT_APP_BACKEND_PROTOCOL as string
+    const host = env.VITE_REACT_APP_BACKEND_DOMAIN as string
+    const target = `${protocol}://${host}/auth/login`
     const bodyReq = {
         email,
         password,
@@ -35,7 +38,10 @@ export interface RegisterProps {
 }
 
 export const register = createAsyncThunk('auth/register', async ({ name, email, password }: RegisterProps, { rejectWithValue }) => {
-    const target = `http://localhost:2000/auth/register`
+    const env = import.meta.env
+    const protocol = env.VITE_REACT_APP_BACKEND_PROTOCOL as string
+    const host = env.VITE_REACT_APP_BACKEND_DOMAIN as string
+    const target = `${protocol}://${host}/auth/register`
     const bodyReq: RegisterProps = {
         name,
         email,
