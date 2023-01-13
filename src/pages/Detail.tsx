@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useParams } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
@@ -18,6 +18,8 @@ export const Detail: React.FC = () => {
     }
 
     const downloadImage = (): void => {}
+
+    useEffect(() => {}, [])
 
     return (
         <section id="hero" className="section-1">
