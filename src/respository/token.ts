@@ -5,5 +5,9 @@ export const getToken = (): string | null => {
 
 export const getUser = (): any => {
     const user = localStorage.getItem('user')
+    if (user == null) {
+        return {}
+    }
+
     return JSON.parse(user)
 }
