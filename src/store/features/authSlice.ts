@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { getToken } from '../../respository'
 
 export interface LoginProps {
     email: string
@@ -56,7 +57,9 @@ export const register = createAsyncThunk('auth/register', async ({ name, email, 
     }
 })
 
-const initialState = {}
+const initialState = {
+    token: getToken(),
+}
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -68,3 +71,5 @@ export const authSlice = createSlice({
         })
     },
 })
+
+export default authSlice.reducer
