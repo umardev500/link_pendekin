@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import logo from '../assets/img/logo.svg'
+import logo from '../assets/img/logo-2.png'
 import logoLogout from '../assets/img/logout.svg'
 import { useAppDispatch, useAppSelector } from '../store'
 import { logoutUser } from '../store/features'
