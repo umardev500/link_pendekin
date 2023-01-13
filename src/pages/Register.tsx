@@ -27,18 +27,12 @@ export const Register: React.FC = () => {
             loadingToast()
             try {
                 const response = await dispatch(register(payload)).unwrap()
-                console.log(response)
                 const status = response.status
 
                 if (status === 'success') {
                     toast('Account created.', { autoClose: 3000 })
-                    const data = response.data
-                    const token = data.token
-                    const refreshToken = data.refreshToken
-                    localStorage.setItem('token', token)
-                    localStorage.setItem('refreshToken', refreshToken)
 
-                    navigate('/dashboard')
+                    navigate('/login')
                 }
                 if (status !== 'success') {
                     const messages: any[] = response.message
