@@ -1,15 +1,22 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { LinkCard } from '../components/LinkCard'
 import { useAppDispatch } from '../store'
 import { getLinks } from '../store/features'
 
 export const Dashboard: React.FC = () => {
+    const [data, setData] = useState<any[]>([])
     const dispatch = useAppDispatch()
 
     useEffect(() => {
         const fetchData = async (): Promise<void> => {
             try {
                 const response = await dispatch(getLinks()).unwrap()
-                console.log(response)
+                const status = response.status
+                if (status === 'success') {
+                    setData(response.data)
+                }
+
+                if (status !== 'success') setData([])
             } catch (err) {
                 console.log(err)
             }
@@ -31,10 +38,10 @@ export const Dashboard: React.FC = () => {
                     </div>
 
                     <div className="row justify-content-center">
-                        {/* {props.links.length > 0 &&
-                            props.links.map((link, index) => {
+                        {data.length > 0 &&
+                            data.map((link, index) => {
                                 return <LinkCard key={index} short={link.short} url={link.url} views={link.views} date={link.createdAt} />
-                            })} */}
+                            })}
                     </div>
                 </div>
             </div>

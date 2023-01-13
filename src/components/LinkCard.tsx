@@ -9,12 +9,15 @@ interface Props {
 }
 
 export const LinkCard: React.FC<Props> = ({ short, url, views, date }) => {
+    const env = import.meta.env
+    const host = env.VITE_REACT_APP_BACKEND_DOMAIN as string
+
     return (
         <div className="col-md-4 mb-4">
             <div className="link-card">
                 <p className="highlight bold mb-3">
                     <strong>
-                        {process.env.REACT_APP_BACKEND_DOMAIN}/{short}
+                        {host}/{short}
                     </strong>
                 </p>
                 <p className="mb-2">Link: {url}</p>
