@@ -23,8 +23,7 @@ export const updateLink = createAsyncThunk('link/updateLink', async ({ data, id 
     if (token !== null) {
         headers = {
             ...headers,
-            Authorization:
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoidW1hciIsImVtYWlsIjoidW1hci5kZXY1MDBAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkaFhXSWZtNVZELmNmNnkwVEdzbk5kTzdFUWtsVjJ1aVdMbHpVcFRrNkJyZWVrZ250a0tCLmEiLCJjcmVhdGVkQXQiOiIyMDIzLTAxLTEzVDE3OjIwOjIyLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIzLTAxLTEzVDE3OjIwOjIyLjAwMFoifSwiaWF0IjoxNjczNjMzMTc5LCJleHAiOjE2NzM4MDU5Nzl9.keJAbctnAqqk-bYBmMtgC2_SmbRK2jvYTVMM08PF7xw',
+            Authorization: getToken(),
         }
     }
 
@@ -61,8 +60,7 @@ export const createPostLink = createAsyncThunk('link/createLink', async ({ url, 
     if (token !== null) {
         headers = {
             ...headers,
-            Authorization:
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoidW1hciIsImVtYWlsIjoidW1hci5kZXY1MDBAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkaFhXSWZtNVZELmNmNnkwVEdzbk5kTzdFUWtsVjJ1aVdMbHpVcFRrNkJyZWVrZ250a0tCLmEiLCJjcmVhdGVkQXQiOiIyMDIzLTAxLTEzVDE3OjIwOjIyLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIzLTAxLTEzVDE3OjIwOjIyLjAwMFoifSwiaWF0IjoxNjczNjMzMTc5LCJleHAiOjE2NzM4MDU5Nzl9.keJAbctnAqqk-bYBmMtgC2_SmbRK2jvYTVMM08PF7xw',
+            Authorization: getToken(),
         }
     }
 
@@ -94,15 +92,23 @@ export const getLink = createAsyncThunk('link/getLink', async (short: string, { 
 
 export const getLinks = createAsyncThunk('link/getLinks', async (props, { rejectWithValue }) => {
     const target = `http://localhost:2000/links`
+    let headers: any = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+    }
+
+    const token = getToken()
+    if (token !== null) {
+        headers = {
+            ...headers,
+            Authorization: getToken(),
+        }
+    }
 
     try {
         const response = await fetch(target, {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization:
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoidW1hciIsImVtYWlsIjoidW1hci5kZXY1MDBAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkaFhXSWZtNVZELmNmNnkwVEdzbk5kTzdFUWtsVjJ1aVdMbHpVcFRrNkJyZWVrZ250a0tCLmEiLCJjcmVhdGVkQXQiOiIyMDIzLTAxLTEzVDE3OjIwOjIyLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIzLTAxLTEzVDE3OjIwOjIyLjAwMFoifSwiaWF0IjoxNjczNjMzMTc5LCJleHAiOjE2NzM4MDU5Nzl9.keJAbctnAqqk-bYBmMtgC2_SmbRK2jvYTVMM08PF7xw',
-            },
+            headers,
         })
 
         return await response.json()
