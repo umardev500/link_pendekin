@@ -8,11 +8,13 @@ import { Payload } from '../types'
 
 export const Home: React.FC = () => {
     const [url, setUrl] = useState('http://google.com')
-    const [short] = useState('')
+    const [short, setShort] = useState('')
     const [custom, setCustom] = useState(false)
     const toastLoading = React.useRef<any>(null)
     const loadingToast = () => (toastLoading.current = toast('Processing please wait....'))
 
+    const env = import.meta.env
+    const host = env.VITE_REACT_APP_BACKEND_DOMAIN as string
     const link = useAppSelector((state) => state.link)
     const ERRORS = fieldErrors(link.message)
 
@@ -86,23 +88,25 @@ export const Home: React.FC = () => {
                                     />
                                     <p className="small text-danger mt-2">{ERRORS?.url?.message}</p>
                                 </div>
-                                {/* {custom && (
+                                {custom && (
                                     <div className="mb-4">
                                         <div className="d-flex align-items-center">
-                                            <span className="text-white me-4">{process.env.REACT_APP_BACKEND_DOMAIN}/</span>
+                                            <span className="text-white me-4">{host}/</span>
                                             <input
                                                 type="text"
                                                 className="form-control"
                                                 name="short"
                                                 id="short"
                                                 value={short}
-                                                onChange={(e) => setShort(e.target.value)}
+                                                onChange={(e) => {
+                                                    setShort(e.target.value)
+                                                }}
                                                 placeholder="Buat link pendek"
                                             />
                                         </div>
                                         <p className="small text-danger mt-2">{ERRORS?.short?.message}</p>
                                     </div>
-                                )} */}
+                                )}
                                 <div className="text-end">
                                     <p>
                                         Atau gunakan{' '}
