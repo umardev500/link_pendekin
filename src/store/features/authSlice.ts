@@ -72,6 +72,14 @@ export const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(login.fulfilled, (state, value) => {
+            const payload = value.payload
+            const status = payload.status
+            if (status === 'success') {
+                const data = payload.data
+                const token = data.token
+                state.token = token
+            }
+
             console.log('value', value)
         })
     },

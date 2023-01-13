@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { useAppSelector } from '../store'
+import { getToken } from '../respository'
 
 interface Props {
     children?: React.ReactElement
 }
 
 export const ProtectedRoute: React.FC<Props> = ({ children }) => {
-    const auth = useAppSelector((state) => state.auth)
+    const token = getToken()
     const navigate = useNavigate()
 
-    const token = auth.token
+    // const token = auth.token
     if (token === null) {
         useEffect(() => {
             navigate('/login')
@@ -22,10 +22,9 @@ export const ProtectedRoute: React.FC<Props> = ({ children }) => {
 }
 
 export const GuestRoute: React.FC<Props> = ({ children }) => {
-    const auth = useAppSelector((state) => state.auth)
+    const token = getToken()
     const navigate = useNavigate()
 
-    const token = auth.token
     if (token !== null) {
         useEffect(() => {
             navigate('/dashboard')

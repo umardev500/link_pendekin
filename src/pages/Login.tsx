@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import { useAppDispatch } from '../store'
 import { login, LoginProps, setUser } from '../store/features'
@@ -11,6 +11,7 @@ export const Login: React.FC = () => {
     const loadingToast = () => (toastLoadingRef.current = toast('Processing please wait...'))
 
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     const loginHandler = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
@@ -40,7 +41,7 @@ export const Login: React.FC = () => {
                     const user = data.user
                     localStorage.setItem('user', JSON.stringify(user))
                     dispatch(setUser(user))
-                    console.log(user)
+                    navigate('/dashboard')
                 }
 
                 toast.dismiss(toastLoadingRef.current)
