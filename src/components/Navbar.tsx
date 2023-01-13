@@ -1,14 +1,24 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import logo from '../assets/img/logo.svg'
 import logoLogout from '../assets/img/logout.svg'
-import { useAppSelector } from '../store'
+import { useAppDispatch, useAppSelector } from '../store'
+import { logoutUser } from '../store/features'
 
 export const Navbar: React.FC = () => {
     const auth = useAppSelector((state) => state.auth)
     const data = auth.user
 
-    const logout = (): void => {}
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+
+    const logout = (): void => {
+        dispatch(logoutUser())
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        localStorage.removeItem('refreshToken')
+        navigate('/login')
+    }
 
     return (
         <nav className="navbar navbar-dark">
