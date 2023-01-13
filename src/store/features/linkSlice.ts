@@ -8,6 +8,44 @@ const initialState: linkResponse = {
     data: null,
 }
 
+export interface UpdatePropsType {
+    data: Payload
+    id: string
+}
+export const updateLink = createAsyncThunk('link/updateLink', async ({ data, id }: UpdatePropsType, { rejectWithValue }) => {
+    const target = `http://localhost:2000/links/${id}`
+    let headers: any = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+    }
+
+    const token = getToken()
+    if (token !== null) {
+        headers = {
+            ...headers,
+            Authorization:
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJuYW1lIjoidW1hciIsImVtYWlsIjoidW1hci5kZXY1MDBAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkaFhXSWZtNVZELmNmNnkwVEdzbk5kTzdFUWtsVjJ1aVdMbHpVcFRrNkJyZWVrZ250a0tCLmEiLCJjcmVhdGVkQXQiOiIyMDIzLTAxLTEzVDE3OjIwOjIyLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDIzLTAxLTEzVDE3OjIwOjIyLjAwMFoifSwiaWF0IjoxNjczNjMzMTc5LCJleHAiOjE2NzM4MDU5Nzl9.keJAbctnAqqk-bYBmMtgC2_SmbRK2jvYTVMM08PF7xw',
+        }
+    }
+
+    const requestBody: Payload = {
+        url: data.url,
+        short: data.short,
+    }
+
+    try {
+        const response = await fetch(target, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify(requestBody),
+        })
+
+        return await response.json()
+    } catch (err) {
+        return rejectWithValue(err)
+    }
+})
+
 export const createPostLink = createAsyncThunk('link/createLink', async ({ url, short }: Payload, { rejectWithValue }) => {
     const requestBody: Payload = {
         url,

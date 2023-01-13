@@ -1,7 +1,89 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router'
+import { toast, ToastContainer } from 'react-toastify'
+import { useAppDispatch } from '../store'
+import { getLink, updateLink } from '../store/features'
+import { Payload } from '../types'
 
 export const Edit: React.FC = () => {
-    const updateHandler = (): void => {}
+    const [url, setUrl] = useState('')
+    const [shortUrl, setShort] = useState('')
+    const [id, setId] = useState('')
+
+    const navigate = useNavigate()
+    const params = useParams()
+    const { short } = params
+    const toastLoading = React.useRef<any>(null)
+    const loadingToast = () => (toastLoading.current = toast('Processing please wait....'))
+
+    const dispatch = useAppDispatch()
+
+    const updateHandler = (e: React.FormEvent<HTMLFormElement>): void => {
+        e.preventDefault()
+
+        loadingToast()
+        const payload: Payload = {
+            url,
+            short: shortUrl,
+        }
+
+        console.log(payload)
+
+        const update = async (): Promise<void> => {
+            try {
+                const response = await dispatch(updateLink({ data: payload, id }))
+                const payloads = response.payload
+                const status = payloads.status
+                if (status === 'success') {
+                    toast('Link updated.', { autoClose: 3000 })
+                    navigate(`/dashboard`)
+                }
+                if (status !== 'success') {
+                    console.log('error here', status)
+                    const messages: any[] = payloads.message
+                    messages.forEach((val) => {
+                        toast(val.message, { autoClose: 3000 })
+                    })
+                }
+            } catch (err) {
+                console.log(err)
+                toast('Something went wrong.')
+            } finally {
+                toast.dismiss(toastLoading.current)
+            }
+        }
+
+        update().catch((err) => {
+            console.log(err)
+        })
+    }
+
+    useEffect(() => {
+        const fetchLink = async (): Promise<void> => {
+            try {
+                const response = await dispatch(getLink(short as string))
+                const payload = response.payload
+                const status = payload.status
+                if (status === 'success') {
+                    const data = payload.data
+                    setUrl(data.url)
+                    setShort(data.short)
+                    setId(data.id.toString())
+                }
+
+                if (status !== 'success') {
+                    setUrl('')
+                    setShort('')
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        }
+
+        fetchLink().catch((err) => {
+            console.log(err)
+        })
+    }, [])
 
     return (
         <div>
@@ -23,8 +105,10 @@ export const Edit: React.FC = () => {
                                             className="form-control"
                                             name="url"
                                             id="url"
-                                            defaultValue={'default value'}
-                                            onChange={(e) => {}}
+                                            defaultValue={url}
+                                            onChange={(e) => {
+                                                setUrl(e.target.value)
+                                            }}
                                             placeholder="Masukkan link panjang Anda"
                                         />
                                         {/* <p className="text-danger">{ERRORS?.url?.message}</p> */}
@@ -37,8 +121,10 @@ export const Edit: React.FC = () => {
                                                 className="form-control"
                                                 name="short"
                                                 id="short"
-                                                defaultValue={'default value'}
-                                                onChange={(e) => {}}
+                                                defaultValue={shortUrl}
+                                                onChange={(e) => {
+                                                    setShort(e.target.value)
+                                                }}
                                                 placeholder="Buat link pendek"
                                             />
                                         </div>
@@ -54,6 +140,7 @@ export const Edit: React.FC = () => {
                         </div>
                     </div>
                 </div>
+                <ToastContainer />
             </section>
         </div>
     )
