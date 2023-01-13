@@ -1,11 +1,56 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
+import { useAppDispatch } from '../store'
+import { login, LoginProps } from '../store/features'
 
 export const Login: React.FC = () => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('umar.dev500@gmail.com')
+    const [password, setPassword] = useState('umardev')
+    const toastLoadingRef = useRef<any>(null)
+    const loadingToast = () => (toastLoadingRef.current = toast('Processing please wait...'))
 
-    const loginHandler = (): void => {}
+    const dispatch = useAppDispatch()
+
+    const loginHandler = (e: React.FormEvent<HTMLFormElement>): void => {
+        e.preventDefault()
+
+        const payload: LoginProps = {
+            email,
+            password,
+        }
+
+        const doing = async (): Promise<void> => {
+            loadingToast()
+
+            try {
+                const response = await dispatch(login(payload)).unwrap()
+                console.log(response)
+                const status = response.status
+                if (status === 'error') {
+                    toast('Something went wrong.', { autoClose: 3000 })
+                }
+                if (status === 'success') {
+                    toast('Login success.', { autoClose: 3000 })
+                    const data = response.data
+                    const token = data.token
+                    const refreshToken = data.refreshToken
+                    localStorage.setItem('token', token)
+                    localStorage.setItem('refreshToken', refreshToken)
+                    console.log(data)
+                }
+
+                toast.dismiss(toastLoadingRef.current)
+            } catch (err) {
+                toast.dismiss(toastLoadingRef.current)
+                console.log(err)
+            }
+        }
+
+        doing().catch((err) => {
+            console.log(err)
+        })
+    }
 
     return (
         <section id="hero" className="section-1">
@@ -66,6 +111,7 @@ export const Login: React.FC = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </section>
     )
 }
