@@ -26,7 +26,6 @@ export const Login: React.FC = () => {
 
             try {
                 const response = await dispatch(login(payload)).unwrap()
-                console.log(response)
                 const status = response.status
                 if (status === 'error') {
                     const isArr = Array.isArray(response.message)

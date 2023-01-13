@@ -89,8 +89,6 @@ export const authSlice = createSlice({
                 const token = data.token
                 state.token = token
             }
-
-            console.log('value', value)
         })
     },
 })
