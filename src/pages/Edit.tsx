@@ -29,7 +29,7 @@ export const Edit: React.FC = () => {
 
         const update = async (): Promise<void> => {
             try {
-                const response = await dispatch(updateLink({ data: payload, id }))
+                const response = await dispatch(updateLink({ data: payload, id })).unwrap()
                 const payloads = response.payload
                 const status = payloads.status
                 if (status === 'success') {

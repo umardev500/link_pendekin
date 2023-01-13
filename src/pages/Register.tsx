@@ -1,12 +1,63 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
+import { useAppDispatch } from '../store'
+import { register, RegisterProps } from '../store/features'
 
 export const Register: React.FC = () => {
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [name, setName] = useState('a')
+    const [email, setEmail] = useState('a')
+    const [password, setPassword] = useState('a')
+    const toastLoading = React.useRef<any>(null)
+    const loadingToast = () => (toastLoading.current = toast('Processing please wait....'))
 
-    const registerHandler = (): void => {}
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+
+    const registerHandler = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+        const payload: RegisterProps = {
+            name,
+            email,
+            password,
+        }
+
+        const reg = async (): Promise<void> => {
+            loadingToast()
+            try {
+                const response = await dispatch(register(payload)).unwrap()
+                console.log(response)
+                const status = response.status
+
+                if (status === 'success') {
+                    toast('Account created.', { autoClose: 3000 })
+                    const data = response.data
+                    const token = data.token
+                    const refreshToken = data.refreshToken
+                    localStorage.setItem('token', token)
+                    localStorage.setItem('refreshToken', refreshToken)
+
+                    navigate('/dashboard')
+                }
+                if (status !== 'success') {
+                    const messages: any[] = response.message
+                    messages.forEach((val, index) => {
+                        toast(val.message, { autoClose: 3000 + 1000 * index })
+                    })
+                }
+            } catch (err) {
+                console.log(err)
+                toast('Something went wrong.')
+            } finally {
+                toast.dismiss(toastLoading.current)
+            }
+        }
+
+        reg().catch((err) => {
+            console.log(err)
+        })
+    }
 
     return (
         <section id="hero" className="section-1">
@@ -38,7 +89,7 @@ export const Register: React.FC = () => {
                                 </div>
                                 <div className="mb-4">
                                     <input
-                                        type="email"
+                                        type="text"
                                         className="form-control"
                                         id="email"
                                         name="email"
@@ -81,6 +132,8 @@ export const Register: React.FC = () => {
                     </div>
                 </div>
             </div>
+
+            <ToastContainer />
         </section>
     )
 }
