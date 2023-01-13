@@ -30,15 +30,13 @@ export const Edit: React.FC = () => {
         const update = async (): Promise<void> => {
             try {
                 const response = await dispatch(updateLink({ data: payload, id })).unwrap()
-                const payloads = response.payload
-                const status = payloads.status
+                const status = response.status
                 if (status === 'success') {
                     toast('Link updated.', { autoClose: 3000 })
                     navigate(`/dashboard`)
                 }
                 if (status !== 'success') {
-                    console.log('error here', status)
-                    const messages: any[] = payloads.message
+                    const messages: any[] = response.message
                     messages.forEach((val) => {
                         toast(val.message, { autoClose: 3000 })
                     })
