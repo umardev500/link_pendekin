@@ -1,9 +1,13 @@
+import { saveAs } from 'file-saver'
 import React, { useEffect } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useParams } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import copy from '../assets/img/copy.svg'
 import qr from '../assets/img/qr-code.svg'
+import formatDate from '../helper/formatDate'
+import { useAppDispatch, useAppSelector } from '../store'
+import { getLink } from '../store/features/linkSlice'
 
 export const Detail: React.FC = () => {
     const params = useParams()
@@ -13,13 +17,34 @@ export const Detail: React.FC = () => {
     const host = env.VITE_REACT_APP_BACKEND_DOMAIN as string
     const shortLink = `${protocol}://${host}/${short as string}`
 
+    const dispatch = useAppDispatch()
+    const link = useAppSelector((state) => state.link)
+
+    let qrLink: string = ''
+    let fileName: string = ''
+    let views: number = 0
+    let createdAt: string = ''
+    if (!link.error && link.data !== null) {
+        const id = link.data.id
+        qrLink = `${protocol}://${host}/images/qr/${id as string}.png`
+        fileName = `qr-${id as string}.png`
+        views = link.data.views
+        createdAt = link.data.createdAt
+    }
+
     const copied = (): void => {
         toast('Link copied to clipboard')
     }
 
-    const downloadImage = (): void => {}
+    const downloadImage = (): void => {
+        saveAs(qrLink, fileName)
+    }
 
-    useEffect(() => {}, [])
+    useEffect(() => {
+        dispatch(getLink(short as string)).catch((err) => {
+            console.log(err)
+        })
+    }, [])
 
     return (
         <section id="hero" className="section-1">
@@ -34,8 +59,8 @@ export const Detail: React.FC = () => {
                     <div className="d-flex justify-content-center">
                         <div className="col-md-8">
                             <div className="d-flex justify-content-between">
-                                <p className="text-muted">Hits: 1212</p>
-                                <p className="text-muted">Created: Sep 23, 2023</p>
+                                <p className="text-muted">Hits: {views}</p>
+                                <p className="text-muted">Created: {createdAt !== '' ? formatDate(createdAt) : ''}</p>
                             </div>
                             <form autoComplete="off">
                                 <div className="input-group mb-5">
@@ -61,7 +86,7 @@ export const Detail: React.FC = () => {
                                                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div className="modal-body text-center">
-                                                    <img src={qr} alt="" />
+                                                    <img src={qrLink} alt="" />
                                                 </div>
                                                 <div className="modal-footer">
                                                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
