@@ -5,9 +5,9 @@ import { useAppDispatch } from '../store'
 import { register, RegisterProps } from '../store/features'
 
 export const Register: React.FC = () => {
-    const [name, setName] = useState('a')
-    const [email, setEmail] = useState('a')
-    const [password, setPassword] = useState('a')
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const toastLoading = React.useRef<any>(null)
     const loadingToast = () => (toastLoading.current = toast('Processing please wait....'))
 
