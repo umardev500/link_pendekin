@@ -27,8 +27,6 @@ export const Edit: React.FC = () => {
             short: shortUrl,
         }
 
-        console.log(payload)
-
         const update = async (): Promise<void> => {
             try {
                 const response = await dispatch(updateLink({ data: payload, id }))
