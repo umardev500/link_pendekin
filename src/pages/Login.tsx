@@ -29,10 +29,16 @@ export const Login: React.FC = () => {
                 console.log(response)
                 const status = response.status
                 if (status === 'error') {
-                    const messages: any[] = response.message
-                    messages.forEach((val, index) => {
-                        toast(val.message, { autoClose: 3000 + 1000 * index })
-                    })
+                    const isArr = Array.isArray(response.message)
+
+                    if (isArr) {
+                        const messages: any[] = response.message
+                        messages.forEach((val, index) => {
+                            toast(val.message, { autoClose: 3000 + 1000 * index })
+                        })
+                    } else {
+                        toast(response.message, { autoClose: 3000 })
+                    }
                 }
                 if (status === 'success') {
                     toast('Login success.', { autoClose: 3000 })
