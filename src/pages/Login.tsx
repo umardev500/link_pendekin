@@ -5,8 +5,8 @@ import { useAppDispatch } from '../store'
 import { login, LoginProps, setUser } from '../store/features'
 
 export const Login: React.FC = () => {
-    const [email, setEmail] = useState('umar.dev500@gmail.com')
-    const [password, setPassword] = useState('umardev')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const toastLoadingRef = useRef<any>(null)
     const loadingToast = () => (toastLoadingRef.current = toast('Processing please wait...'))
 
