@@ -12,7 +12,7 @@ export const Router = (): React.ReactElement => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/detail" element={<Detail />} />
+                <Route path="/detail/:short" element={<Detail />} />
                 <Route path="/edit" element={<Edit />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />

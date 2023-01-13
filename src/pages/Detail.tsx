@@ -1,12 +1,20 @@
 import React from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import toast from 'react-hot-toast'
+import { useParams } from 'react-router-dom'
+import { toast, ToastContainer } from 'react-toastify'
 import copy from '../assets/img/copy.svg'
 import qr from '../assets/img/qr-code.svg'
 
 export const Detail: React.FC = () => {
+    const params = useParams()
+    const { short } = params
+    const env = import.meta.env
+    const protocol = env.VITE_REACT_APP_BACKEND_PROTOCOL as string
+    const host = env.VITE_REACT_APP_BACKEND_DOMAIN as string
+    const shortLink = `${protocol}://${host}/${short as string}`
+
     const copied = (): void => {
-        toast.success('Link copied to clipboard')
+        toast('Link copied to clipboard')
     }
 
     const downloadImage = (): void => {}
@@ -29,15 +37,9 @@ export const Detail: React.FC = () => {
                             </div>
                             <form autoComplete="off">
                                 <div className="input-group mb-5">
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        // value={`${process.env.REACT_APP_BACKEND_PROTOCOL}://${process.env.REACT_APP_BACKEND_DOMAIN}/${props.link.short}`}
-                                        disabled
-                                        aria-describedby="basic-addon2"
-                                    />
+                                    <input type="text" className="form-control" value={shortLink} disabled aria-describedby="basic-addon2" />
                                     <span className="input-group-text" id="basic-addon2">
-                                        <CopyToClipboard text="halo">
+                                        <CopyToClipboard text={shortLink}>
                                             <img onClick={copied} src={copy} alt="" />
                                         </CopyToClipboard>
                                     </span>
@@ -72,7 +74,7 @@ export const Detail: React.FC = () => {
                                     </div>
                                 </div>
                                 <div className="text-center">
-                                    <a href={`#`} className="btn btn-blue">
+                                    <a href={shortLink} target="_blank" className="btn btn-blue" rel="noreferrer">
                                         Menuju link
                                     </a>
                                 </div>
@@ -81,6 +83,7 @@ export const Detail: React.FC = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </section>
     )
 }
