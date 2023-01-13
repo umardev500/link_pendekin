@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import { useAppDispatch } from '../store'
-import { login, LoginProps } from '../store/features'
+import { login, LoginProps, setUser } from '../store/features'
 
 export const Login: React.FC = () => {
     const [email, setEmail] = useState('umar.dev500@gmail.com')
@@ -37,7 +37,10 @@ export const Login: React.FC = () => {
                     const refreshToken = data.refreshToken
                     localStorage.setItem('token', token)
                     localStorage.setItem('refreshToken', refreshToken)
-                    console.log(data)
+                    const user = data.user
+                    localStorage.setItem('user', JSON.stringify(user))
+                    dispatch(setUser(user))
+                    console.log(user)
                 }
 
                 toast.dismiss(toastLoadingRef.current)

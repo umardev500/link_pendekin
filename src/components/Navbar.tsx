@@ -1,8 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../assets/img/logo.svg'
+import logoLogout from '../assets/img/logout.svg'
+import { useAppSelector } from '../store'
 
 export const Navbar: React.FC = () => {
+    const auth = useAppSelector((state) => state.auth)
+    const data = auth.user
+
+    const logout = (): void => {}
+
     return (
         <nav className="navbar navbar-dark">
             <div className="container">
@@ -10,12 +17,12 @@ export const Navbar: React.FC = () => {
                     <img src={logo} alt="" />
                 </Link>
                 <div className="ms-auto">
-                    {/* {props.user.data && props.user.data.id ? (
+                    {data !== null ? (
                         <div className="d-flex">
                             <Link className="mb-0 me-2 text-white" to={'/dashboard'}>
-                                {props.user.data.email}
+                                {data.email}
                             </Link>
-                            <button onClick={logout} className="no-btn" disabled={props.user.loading}>
+                            <button onClick={logout} className="no-btn" disabled={false}>
                                 <img src={logoLogout} alt="" />
                             </button>
                         </div>
@@ -27,7 +34,7 @@ export const Navbar: React.FC = () => {
                         <Link to={'/login'} className="btn btn-red">
                             Login
                         </Link>
-                    )} */}
+                    )}
                 </div>
             </div>
         </nav>

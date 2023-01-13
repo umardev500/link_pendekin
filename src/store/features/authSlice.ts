@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getToken } from '../../respository'
+import { getToken, getUser } from '../../respository'
 
 export interface LoginProps {
     email: string
@@ -59,17 +59,23 @@ export const register = createAsyncThunk('auth/register', async ({ name, email, 
 
 const initialState = {
     token: getToken(),
+    user: getUser(),
 }
 
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+        setUser: (state, action) => {
+            state.user = action.payload
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(login.fulfilled, (state, value) => {
-            console.log(value)
+            console.log('value', value)
         })
     },
 })
 
+export const { setUser } = authSlice.actions
 export default authSlice.reducer
