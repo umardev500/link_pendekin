@@ -40,7 +40,7 @@ export const Detail: React.FC = () => {
         // saveAs(qrLink, fileName)
         const fetchImage = async (): Promise<void> => {
             try {
-                const response = await fetch(qrLink + 'sd')
+                const response = await fetch(qrLink)
                 const statusCode = response.status
 
                 if (statusCode === 200) {
