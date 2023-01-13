@@ -29,7 +29,7 @@ export const Login: React.FC = () => {
                 console.log(response)
                 const status = response.status
                 if (status === 'error') {
-                    toast('Something went wrong.', { autoClose: 3000 })
+                    toast(response.message, { autoClose: 3000 })
                 }
                 if (status === 'success') {
                     toast('Login success.', { autoClose: 3000 })
