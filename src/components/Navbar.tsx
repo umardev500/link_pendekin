@@ -20,6 +20,8 @@ export const Navbar: React.FC = () => {
         navigate('/login')
     }
 
+    console.log(location)
+
     return (
         <nav className="navbar navbar-dark">
             <div className="container">
@@ -27,7 +29,7 @@ export const Navbar: React.FC = () => {
                     <img src={logo} alt="" />
                 </Link>
                 <div className="ms-auto">
-                    {data !== null ? (
+                    {data?.id !== undefined ? (
                         <div className="d-flex">
                             <Link className="mb-0 me-2 text-white" to={'/dashboard'}>
                                 {data.email}
@@ -36,14 +38,26 @@ export const Navbar: React.FC = () => {
                                 <img src={logoLogout} alt="" />
                             </button>
                         </div>
-                    ) : location.pathname === '/login' ? (
-                        <Link to={'/register'} className="btn btn-red">
-                            Daftar
-                        </Link>
                     ) : (
-                        <Link to={'/login'} className="btn btn-red">
-                            Login
-                        </Link>
+                        <>
+                            {location.hash !== '#/register' && location.hash !== '#/login' ? (
+                                <Link to={'/login'} className="btn btn-red">
+                                    Login
+                                </Link>
+                            ) : null}
+
+                            {location.hash === '#/register' ? (
+                                <Link to={'/login'} className="btn btn-red">
+                                    Login
+                                </Link>
+                            ) : null}
+
+                            {location.hash === '#/login' ? (
+                                <Link to={'/register'} className="btn btn-red">
+                                    Register
+                                </Link>
+                            ) : null}
+                        </>
                     )}
                 </div>
             </div>
